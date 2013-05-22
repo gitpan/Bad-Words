@@ -1,0 +1,99 @@
+NAME
+    Bad::Words - a list of bad words
+
+SYNOPSIS
+            require Bad::Words;
+
+            my $wordref = once Bad::Words qw(add words);
+            my $wordref = new Bad::Words qw(add more words);
+            my $wordref = newthrd Bad::Words qw(add words);
+
+DESCRIPTION
+    This module returns a reference to an array of bad words.
+
+    i.e racial slurs, swear words, etc...
+
+    Add more words when calling once or new newthrd.
+
+WORD SOURCE'S
+    The words are taken from the public domain.
+
+            =========================================
+
+      http://fffff.at/googles-official-list-of-bad-words/
+
+    The contents of the site are all in the public domain. You may enjoy,
+    use, modify, snipe about and republish all F.A.T. media and technologies
+    as you see fit.
+
+            =========================================
+
+      http://urbanoalvarez.es/blog/2008/04/04/bad-words-list/
+
+    A public forum
+
+            =========================================
+
+      http://wordpress.org/support/topic/plugin-wp-content-filter-list-of-swear-words
+      posted to http://www.ourchangingglobe.com/misc/badwords-comma.txt
+
+      GPL2V2
+
+            =========================================
+
+DESCRIPTION
+    * $wordref = new Bad::Words qw(optional list of more words);
+        This method converts all words in the combined lists to lower case,
+        make the list unique, sorts it and returns a blessed reference.
+
+          input:        optional list of additional bad words
+          return:       reference to word list
+
+    * $wordref = once Bad::Words qw(optional list of more words);
+        This method performs the new operation once and on subsequent calls,
+        it just returns the pre-computed reference.
+
+          input:        optional list of additional bad words
+          return:       reference to word list
+
+    * $wordref = newthrd Bad::Words qw(optional list of words);
+        WARNING: once and new store the list reference in lexical variable
+        in the module. newthrd does not do this. once returns the stored
+        variable if it is initialized. If you want thread safe, do not use
+        once and new.
+
+        This method recalculates the list on every call.
+
+          input:        optional list of additional bad words
+          return:       reference to word list
+
+    * $count = $wordref->count;
+        This method returns the number of unique words in the bad word list.
+
+          input:        none
+          return:       number of words
+
+AUTHOR
+        Michael Robinton <michael@bizsystems.com>
+
+COPYRIGHT
+            Copyright 2013, Michael Robinton <michael@bizsystems.com>
+
+        All rights reserved.
+
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 2.
+
+        You should also have received a copy of the GNU General Public
+        License along with this program in the file named "Copying". If not,
+        write to the
+
+                Free Software Foundation, Inc.
+                59 Temple Place, Suite 330
+                Boston, MA  02111-1307, USA
+
+        or visit their web page on the internet at:
+
+                http://www.gnu.org/copyleft/gpl.html.
+

@@ -1,0 +1,22 @@
+Revision history for Perl extension Web::Shorten::Me
+
+0.06
+	Integrate Common2.pm into all modules + test
+
+0.05  Mon May  6 18:52:26 PDT 2013
+	ARC4 complete and tested, new encrypt/decrypt tested
+	and added to Common2.pm but not integrated
+
+0.04  Sun Apr 28 07:57:51 PDT 2013
+	MultiDaemon interface complete and tested
+
+0.03  Wed Apr 23 23:29:01 PDT 2013
+	last tarball before addition of 'proto' to parseURL, parseDBurl
+
+0.02  Thu Apr 18 19:38:20 PDT 2013
+	last tarball before breaking Me into pieces
+
+0.01  Fri Apr  5 16:02:08 PDT 2013
+	initial release
+	includes Cocktail Sort in DNS.pm
+

@@ -1,0 +1,9 @@
+Changes
+GPL
+MANIFEST
+MANIFEST.SKIP
+Makefile.PL
+README
+Words.pm
+t/words.t
+META.yml                                 Module meta-data (added by MakeMaker)
