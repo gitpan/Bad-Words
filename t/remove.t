@@ -1,5 +1,5 @@
 #
-# words.t
+# remove.t
 #
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl test.pl'
@@ -8,7 +8,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..5\n"; }
+BEGIN { $| = 1; print "1..3\n"; }
 END {print "not ok 1\n" unless $loaded;}
 
 #use diagnostics;
@@ -30,25 +30,30 @@ sub ok {
 }
 
 my $wr = once Bad::Words;
-my $exp = 755;
+
+my $count = $wr->count;
+
+# words to remove
+my @these = qw(piss whore ass and non swear words);
+
+$wr->remove(@these);
+
 my $got = $wr->count;
-print "got: $got, exp: $exp\nnot "
+
+# test 2	should have removed three words
+my $exp = 3;
+print "removed: '", ($count - $got), "', should have removed '$exp' words\nnot "
+	unless $count - $got == 3;
+&ok;
+
+# test 3	check passes
+# there should be one pass for the swear words
+# and one for each non-swear word except "words" 
+# which sorts to the bottom of the list and thus
+# is included in the last "pass" for a total of 4
+
+$exp = 4;
+$got = $wr->_passes;
+print "did '$got' passes, should have done '$exp'\nnot "
 	unless $got == $exp;
-&ok;
-
-my @list = qw(The Quick Brown Fox Jumped Over The Lazy Dog);
-$wr = $wr->new(@list);
-
-$exp += @list -1;	# two "The's"
-$got = $wr->count;
-print "got: $got, exp: $exp\nnot "
-	unless $got == $exp;
-&ok;
-
-print "Quick not in added word list\nnot "
-	unless grep {/quick/} @$wr;
-&ok;
-
-print "zabourah not in word list\nnot "
-	unless grep {'xxzabourah' =~ /$_/} @$wr;
 &ok;

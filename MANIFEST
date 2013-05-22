@@ -5,5 +5,10 @@ MANIFEST.SKIP
 Makefile.PL
 README
 Words.pm
+t/byref.t
+t/refremove.t
+t/remove.t
 t/words.t
+
+
 META.yml                                 Module meta-data (added by MakeMaker)

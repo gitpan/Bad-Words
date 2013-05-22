@@ -4,32 +4,38 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = do { my @r = (q$Revision: 0.02 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 0.03 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 =head1 NAME
 
 Bad::Words - a list of bad words
 
+=head1 KEYWORDS
+
+abuse bad dirty words vulgar swear slang drugs sex profane
+abusive profanity vulgarity swearing sexual slurs
+
 =head1 SYNOPSIS
 
-	require Bad::Words;
+  require Bad::Words;
 
-	my $wordref = once Bad::Words qw(add words);
-	my $wordref = new Bad::Words qw(add more words);
-	my $wordref = newthrd Bad::Words qw(add words);
+  my $wordref = once Bad::Words qw(add words);
+  my $wordref = new Bad::Words qw(add more words);
+  my $wordref = newthrd Bad::Words qw(add words);
+  my $updated = $wordref->remove(qw( words to remove ));
+  my $numberOfWords = $updated->count;
 
 =head1 DESCRIPTION
 
-This module returns a reference to an array of B<bad words>.
+This module returns an array REF to an alphabetically sorted list of LOWER CASE of B<bad words>.
+You can add more words during initilization with B<once> or B<new> B<newthrd>.
 
-i.e	racial slurs, swear words, etc...
-
-Add more words when calling B<once> or B<new> B<newthrd>.
-
+The list contains American dirty words, swear words, etc...
 
 =head1 WORD SOURCE'S
 
-The words are taken from the public domain.
+The words are taken from the public domain, internet sites and the
+imagination of contributors.
  
 	=========================================
 
@@ -1008,6 +1014,36 @@ my @changing = ('ahole','anus','ash0le','ash0les','asholes','ass','Ass Monkey','
 'skanks','Skanky','slut','sluts','Slutty','slutz','son-of-a-bitch','tit','turd','va1jina','vag1na',
 'vagiina','vagina','vaj1na','vajina','vullva','vulva','w0p','wh00r','wh0re','whore','xrated','xxx');
 
+#################
+#
+# assorted additional words
+
+my @assorted = (
+'batty man', qw(
+bender
+bollocks
+bumboy
+cracker
+cumsucker
+douchebag
+fucktwat
+ho
+honky
+jackass),
+'joey semen',
+'joey deacon', qw(
+knobcheese
+minge
+minger
+mong
+munter
+pickle
+rimmer
+spakka
+spaz
+taint
+tool
+));
 
 my $ref;	# not thread safe
 
@@ -1024,10 +1060,35 @@ sub newthrd {
   my $proto = shift;
   my $class = ref $proto || $proto || __PACKAGE__;
   my $wr = ref($_[0]) ? $_[0] : [@_];
-  my %uniq = map { lc($_) => 1 } (@google,@urbanos,@changing,@$wr);
+  my %uniq = map { lc($_) => 1 } (@google,@urbanos,@changing,@assorted,@$wr);
   my @list = sort keys %uniq;
   bless \@list, $class;
 }
+
+my $passes;
+sub remove {
+  my $wr = shift;
+  my $x = ref($_[0]) ? $_[0] : [@_];
+  my @list = sort map { lc $_ } @$x;
+# attempt to remove words in a single pass
+# this will fail if the 'remove' word in not
+# in the bad list. Hence the while loop
+  $passes = 0;			# for debug
+  while (my $s = shift @list) {
+    $passes++;
+    for (my $i=0;$i<=$#{$wr};) {
+      if ($s eq $wr->[$i]) {
+	splice @$wr,$i,1;
+	$s = shift @list;
+      } else {
+	$i++;
+      }
+    }
+  }
+  $wr;
+}
+
+sub _passes { return $passes };
 
 sub count {
   my $wr = shift;
@@ -1036,6 +1097,19 @@ sub count {
 
 1;
 __END__
+
+=head1 USAGE
+
+  my $wordref = new Bad::Words qw( new swear words );
+  my $updated = $wordref->remove(qw( these words ));
+
+  my $badwords = join '|' @$updated;
+
+  my $paragraph= 'a bunch of text...';
+
+  if ($paragraph =~ /($badwords)/i) {
+      print "paragraph contains badword '$1'\n";
+  }
 
 =head1 DESCRIPTION
 
@@ -1046,7 +1120,8 @@ __END__
 This method converts all words in the combined lists to lower case, make the
 list unique, sorts it and returns a blessed reference.
 
-  input:	optional list of additional bad words
+  input:	a reference to or a list of
+		optional additional bad words
   return:	reference to word list
 
 =item * $wordref = once Bad::Words qw(optional list of more words);
@@ -1054,7 +1129,8 @@ list unique, sorts it and returns a blessed reference.
 This method performs the B<new> operation B<once> and on subsequent calls,
 it just returns the pre-computed reference.
 
-  input:	optional list of additional bad words
+  input:	a reference to or a list of
+		optional additional bad words
   return:	reference to word list
 
 =item * $wordref = newthrd Bad::Words qw(optional list of words);
@@ -1065,10 +1141,19 @@ if it is initialized. If you want thread safe, do not use once and new.
 
 This method recalculates the list on every call.
 
-  input:	optional list of additional bad words
+  input:	a reference to or a list of
+		optional additional bad words
   return:	reference to word list
 
-=item * $count = $wordref->count;
+=item * $updated = $wordref->remove list;
+
+This method removes words from the bad word list.
+
+  input:	a reference to or a list of
+		words to remove from bad word list
+  return:	updated reference
+
+=item * $numberOfWords = $wordref->count;
 
 This method returns the number of unique words in the bad word list.
 

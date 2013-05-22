@@ -1,22 +1,29 @@
 NAME
     Bad::Words - a list of bad words
 
-SYNOPSIS
-            require Bad::Words;
+KEYWORDS
+    abuse bad dirty words vulgar swear slang drugs sex profane abusive
+    profanity vulgarity swearing sexual slurs
 
-            my $wordref = once Bad::Words qw(add words);
-            my $wordref = new Bad::Words qw(add more words);
-            my $wordref = newthrd Bad::Words qw(add words);
+SYNOPSIS
+      require Bad::Words;
+
+      my $wordref = once Bad::Words qw(add words);
+      my $wordref = new Bad::Words qw(add more words);
+      my $wordref = newthrd Bad::Words qw(add words);
+      my $updated = $wordref->remove(qw( words to remove ));
+      my $numberOfWords = $updated->count;
 
 DESCRIPTION
-    This module returns a reference to an array of bad words.
+    This module returns an array REF to an alphabetically sorted list of
+    LOWER CASE of bad words. You can add more words during initilization
+    with once or new newthrd.
 
-    i.e racial slurs, swear words, etc...
-
-    Add more words when calling once or new newthrd.
+    The list contains American dirty words, swear words, etc...
 
 WORD SOURCE'S
-    The words are taken from the public domain.
+    The words are taken from the public domain, internet sites and the
+    imagination of contributors.
 
             =========================================
 
@@ -41,19 +48,33 @@ WORD SOURCE'S
 
             =========================================
 
+USAGE
+      my $wordref = new Bad::Words qw( new swear words );
+      my $updated = $wordref->remove(qw( these words ));
+
+      my $badwords = join '|' @$updated;
+
+      my $paragraph= 'a bunch of text...';
+
+      if ($paragraph =~ /($badwords)/i) {
+          print "paragraph contains badword '$1'\n";
+      }
+
 DESCRIPTION
     * $wordref = new Bad::Words qw(optional list of more words);
         This method converts all words in the combined lists to lower case,
         make the list unique, sorts it and returns a blessed reference.
 
-          input:        optional list of additional bad words
+          input:        a reference to or a list of
+                        optional additional bad words
           return:       reference to word list
 
     * $wordref = once Bad::Words qw(optional list of more words);
         This method performs the new operation once and on subsequent calls,
         it just returns the pre-computed reference.
 
-          input:        optional list of additional bad words
+          input:        a reference to or a list of
+                        optional additional bad words
           return:       reference to word list
 
     * $wordref = newthrd Bad::Words qw(optional list of words);
@@ -64,10 +85,18 @@ DESCRIPTION
 
         This method recalculates the list on every call.
 
-          input:        optional list of additional bad words
+          input:        a reference to or a list of
+                        optional additional bad words
           return:       reference to word list
 
-    * $count = $wordref->count;
+    * $updated = $wordref->remove list;
+        This method removes words from the bad word list.
+
+          input:        a reference to or a list of
+                        words to remove from bad word list
+          return:       updated reference
+
+    * $numberOfWords = $wordref->count;
         This method returns the number of unique words in the bad word list.
 
           input:        none

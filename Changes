@@ -1,5 +1,11 @@
 Revision history for Perl extension Bad::Words
 
+0.03  Wed May 22 16:56:41 PDT 2013
+	added keywords
+	added 24 additonal words
+	added USAGE
+	added method to remove words from bad list
+
 0.02  Wed May 22 14:47:39 PDT 2013
 	escape HERE mark in 'Fu('
 

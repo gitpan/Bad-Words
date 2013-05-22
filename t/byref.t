@@ -1,5 +1,5 @@
 #
-# words.t
+# byref.t
 #
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl test.pl'
@@ -36,8 +36,9 @@ print "got: $got, exp: $exp\nnot "
 	unless $got == $exp;
 &ok;
 
+# do it by reference
 my @list = qw(The Quick Brown Fox Jumped Over The Lazy Dog);
-$wr = $wr->new(@list);
+$wr = $wr->new(\@list);
 
 $exp += @list -1;	# two "The's"
 $got = $wr->count;
