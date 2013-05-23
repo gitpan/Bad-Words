@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = do { my @r = (q$Revision: 0.05 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 0.06 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 =head1 NAME
 
@@ -133,11 +133,11 @@ cockhead
 cockmunch
 cockmuncher
 cocks
-cocksuck 
-cocksucked 
+cocksuck
+cocksucked
 cocksucker
 cocksucking
-cocksucks 
+cocksucks
 cocksuka
 cocksukka
 cok
@@ -155,17 +155,17 @@ cunilingus
 cunillingus
 cunnilingus
 cunt
-cuntlick 
-cuntlicker 
-cuntlicking 
+cuntlick
+cuntlicker
+cuntlicking
 cunts
 cyalis
 cyberfuc
-cyberfuck 
-cyberfucked 
+cyberfuck
+cyberfucked
 cyberfucker
 cyberfuckers
-cyberfucking 
+cyberfucking
 d1ck
 damn
 dick
@@ -185,8 +185,8 @@ duche
 dyke
 ejaculate
 ejaculated
-ejaculates 
-ejaculating 
+ejaculates
+ejaculating
 ejaculatings
 ejaculation
 ejakulate),
@@ -214,19 +214,19 @@ fecker
 felching
 fellate
 fellatio
-fingerfuck 
-fingerfucked 
-fingerfucker 
+fingerfuck
+fingerfucked
+fingerfucker
 fingerfuckers
-fingerfucking 
-fingerfucks 
+fingerfucking
+fingerfucks
 fistfuck
-fistfucked 
-fistfucker 
-fistfuckers 
-fistfucking 
-fistfuckings 
-fistfucks 
+fistfucked
+fistfucker
+fistfuckers
+fistfucking
+fistfuckings
+fistfucks
 flange
 fook
 fooker
@@ -241,7 +241,7 @@ fuckin
 fucking
 fuckings
 fuckingshitmotherfucker
-fuckme 
+fuckme
 fucks
 fuckwhit
 fuckwit
@@ -258,8 +258,8 @@ fux
 fux0r
 f_u_c_k
 gangbang
-gangbanged 
-gangbangs 
+gangbanged
+gangbangs
 gaylord
 gaysex
 goatse
@@ -268,7 +268,7 @@ god-dam
 god-damned
 goddamn
 goddamned
-hardcoresex 
+hardcoresex
 hell
 heshe
 hoar
@@ -279,13 +279,13 @@ hore
 horniest
 horny
 hotsex
-jack-off 
+jack-off
 jackoff
 jap
-jerk-off 
+jerk-off
 jism
-jiz 
-jizm 
+jiz
+jizm
 jizz
 kawk
 knob
@@ -330,11 +330,11 @@ mothafuck
 mothafucka
 mothafuckas
 mothafuckaz
-mothafucked 
+mothafucked
 mothafucker
 mothafuckers
 mothafuckin
-mothafucking 
+mothafucking
 mothafuckings
 mothafucks),
 'mother fucker', qw(
@@ -363,7 +363,7 @@ niggah
 niggas
 niggaz
 nigger
-niggers 
+niggers
 nob),
 'nob jokey', qw(
 nobhead
@@ -371,10 +371,10 @@ nobjocky
 nobjokey
 numbnuts
 nutsack
-orgasim 
-orgasims 
+orgasim
+orgasims
 orgasm
-orgasms 
+orgasms
 p0rn
 pawn
 pecker
@@ -395,25 +395,25 @@ piss
 pissed
 pisser
 pissers
-pisses 
+pisses
 pissflaps
-pissin 
+pissin
 pissing
-pissoff 
+pissoff
 poop
 porn
 porno
 pornography
 pornos
 prick
-pricks 
+pricks
 pron
 pube
 pusse
 pussi
 pussies
 pussy
-pussys 
+pussys
 rectum
 retard
 rimjaw
@@ -450,10 +450,10 @@ shitings
 shits
 shitted
 shitter
-shitters 
+shitters
 shitting
 shittings
-shitty 
+shitty
 skank
 slut
 sluts
@@ -1103,6 +1103,7 @@ sub noregex {
     }
     $i++;
   }
+  $wr;
 }
 
 sub count {

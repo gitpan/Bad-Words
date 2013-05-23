@@ -8,7 +8,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..2\n"; }
+BEGIN { $| = 1; print "1..3\n"; }
 END {print "not ok 1\n" unless $loaded;}
 
 #use diagnostics;
@@ -40,3 +40,12 @@ my $exp = 10;
 print "removed: '", ($count - $got), "', should have removed '$exp' words\nnot "
 	unless $count - $got == $exp;
 &ok;
+
+# test 3	remove all words containing spaces
+$wr->noregex(' ');
+$got = $wr->count;
+$exp = 10 + 27;
+print "removed: '", ($count - $got), "', should have removed '$exp' words\nnot "
+	unless $count - $got == $exp;
+&ok;
+
