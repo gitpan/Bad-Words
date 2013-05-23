@@ -6,6 +6,7 @@ Makefile.PL
 README
 Words.pm
 t/byref.t
+t/noregex.t
 t/refremove.t
 t/remove.t
 t/words.t

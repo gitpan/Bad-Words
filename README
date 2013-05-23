@@ -16,8 +16,8 @@ SYNOPSIS
 
 DESCRIPTION
     This module returns an array REF to an alphabetically sorted list of
-    LOWER CASE of bad words. You can add more words during initiliazation
-    with once or new newthrd.
+    LOWER CASE bad words. You can add more words during initiliazation with
+    once, new, and newthrd.
 
     The list contains American dirty words, swear words, etc...
 
@@ -56,11 +56,25 @@ USAGE
 
       my $paragraph= 'a bunch of text...';
 
-      if ($paragraph =~ /($badwords)/i) {
+      if ($paragraph =~ /($badwords)/oi) {
+          print "paragraph contains badword '$1'\n";
+      }
+
+    The above regex is aggressive and will find "tit" in title. To be less
+    agressive, try:
+
+      if ($paragraph =~ /\b($badwords)\b/oi {
           print "paragraph contains badword '$1'\n";
       }
 
 DESCRIPTION
+    WARNING: once and new store the list reference in a lexical variable
+    within the module. newthrd does not do this. once returns this stored
+    variable if it is already initialized. This is suitable for use in web
+    servers where each httpd child has its own non-thread environment. If
+    you intend to use Bad::Words in a threaded environment, do not use once
+    and new, use newthrd instead.
+
     * $wordref = new Bad::Words qw(optional list of more words);
         This method converts all words in the combined lists to lower case,
         make the list unique, sorts it and returns a blessed reference.
@@ -78,12 +92,7 @@ DESCRIPTION
           return:       reference to word list
 
     * $wordref = newthrd Bad::Words qw(optional list of words);
-        WARNING: once and new store the list reference in lexical variable
-        in the module. newthrd does not do this. once returns the stored
-        variable if it is initialized. If you want thread safe, do not use
-        once and new.
-
-        This method recalculates the list on every call.
+        This method recalculates the bad word list on every call.
 
           input:        a reference to or a list of
                         optional additional bad words
@@ -94,6 +103,19 @@ DESCRIPTION
 
           input:        a reference to or a list of
                         words to remove from bad word list
+          return:       updated reference
+
+    * $updated = $wordref->noregex('regex string');
+        This method removes all words from the list that match the 'regex
+        string'. The regular expression will be used on each word in the
+        list as follows:
+
+                my $regex = shift;
+                foreach(@word) {
+                  remove word if $_ =~ /$regex/;
+                }
+
+          input:        'a regular expression string'
           return:       updated reference
 
     * $numberOfWords = $wordref->count;
@@ -115,8 +137,7 @@ COPYRIGHT
     Free Software Foundation; either version 2.
 
     You should also have received a copy of the GNU General Public License
-    along with this program in the file named "Copying". If not, write to
-    the
+    along with this program in the file named "GPL". If not, write to the
 
             Free Software Foundation, Inc.
             59 Temple Place, Suite 330

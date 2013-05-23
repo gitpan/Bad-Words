@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = do { my @r = (q$Revision: 0.04 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 0.05 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 =head1 NAME
 
@@ -27,8 +27,8 @@ abusive profanity vulgarity swearing sexual slurs
 
 =head1 DESCRIPTION
 
-This module returns an array REF to an alphabetically sorted list of LOWER CASE of B<bad words>.
-You can add more words during initiliazation with B<once> or B<new> B<newthrd>.
+This module returns an array REF to an alphabetically sorted list of LOWER CASE B<bad words>.
+You can add more words during initiliazation with B<once>, B<new>, and B<newthrd>.
 
 The list contains American dirty words, swear words, etc...
 
@@ -1060,7 +1060,8 @@ sub newthrd {
   my $proto = shift;
   my $class = ref $proto || $proto || __PACKAGE__;
   my $wr = ref($_[0]) ? $_[0] : [@_];
-  my %uniq = map { lc($_) => 1 } (@google,@urbanos,@changing,@assorted,@$wr);
+  my @add = grep { defined $_ && $_ ne '' } @$wr;	# strip empty and undefined entries
+  my %uniq = map { lc($_) => 1 } (@google,@urbanos,@changing,@assorted,@add);
   my @list = sort keys %uniq;
   bless \@list, $class;
 }
@@ -1069,17 +1070,19 @@ my $passes;
 sub remove {
   my $wr = shift;
   my $x = ref($_[0]) ? $_[0] : [@_];
-  my @list = sort map { lc $_ } @$x;
+  return $wr unless @$x;	# empty or missing list
+  my @list = sort grep { defined $_ && $_ ne '' && ($_ = lc $_) }@$x;
 # attempt to remove words in a single pass
 # this will fail if the 'remove' word in not
 # in the bad list. Hence the while loop
   $passes = 0;			# for debug
-  while (my $s = shift @list) {
+LIST:
+  while (defined (my $s = shift @list)) {
     $passes++;
-    for (my $i=0;$i<=$#{$wr};) {
+    for (my $i=0;$i< @$wr;) {
       if ($s eq $wr->[$i]) {
 	splice @$wr,$i,1;
-	$s = shift @list;
+	last LIST unless defined ($s = shift @list);	# end of list?
       } else {
 	$i++;
       }
@@ -1090,9 +1093,20 @@ sub remove {
 
 sub _passes { return $passes };
 
+sub noregex {
+  my($wr,$regex) = @_;
+  return $wr unless defined $regex;
+  for (my $i=0;$i< @$wr;) {
+    if ($wr->[$i] =~ /$regex/) {
+      splice @$wr,$i,1;
+      next;
+    }
+    $i++;
+  }
+}
+
 sub count {
-  my $wr = shift;
-  return scalar @$wr;
+  return scalar @{$_[0]};
 }
 
 1;
@@ -1107,11 +1121,25 @@ __END__
 
   my $paragraph= 'a bunch of text...';
 
-  if ($paragraph =~ /($badwords)/i) {
+  if ($paragraph =~ /($badwords)/oi) {
+      print "paragraph contains badword '$1'\n";
+  }
+
+The above regex is aggressive and will find "tit" in title. To be less
+agressive, try:
+
+  if ($paragraph =~ /\b($badwords)\b/oi {
       print "paragraph contains badword '$1'\n";
   }
 
 =head1 DESCRIPTION
+
+WARNING: B<once> and B<new> store the list reference in a lexical variable
+within the module. B<newthrd> does not do this. B<once> returns this stored variable
+if it is already initialized. This is suitable for use in web servers where
+each httpd child has its own non-thread environment. If you intend to use
+Bad::Words in a threaded environment, do not use B<once> and B<new>, use
+B<newthrd> instead.
 
 =over 4
 
@@ -1135,11 +1163,7 @@ it just returns the pre-computed reference.
 
 =item * $wordref = newthrd Bad::Words qw(optional list of words);
 
-WARNING: B<once> and B<new> store the list reference in lexical variable in
-the module. B<newthrd> does not do this. B<once> returns the stored variable
-if it is initialized. If you want thread safe, do not use once and new.
-
-This method recalculates the list on every call.
+This method recalculates the bad word list on every call.
 
   input:	a reference to or a list of
 		optional additional bad words
@@ -1151,6 +1175,20 @@ This method removes words from the bad word list.
 
   input:	a reference to or a list of
 		words to remove from bad word list
+  return:	updated reference
+
+=item * $updated = $wordref->noregex('regex string');
+
+This method removes all words from the list 
+that match the 'regex string'. The regular expression will be used on each
+word in the list as follows:
+
+	my $regex = shift;
+	foreach(@word) {
+	  remove word if $_ =~ /$regex/;
+	}
+
+  input:	'a regular expression string'
   return:	updated reference
 
 =item * $numberOfWords = $wordref->count;
@@ -1177,7 +1215,7 @@ it under the terms of the GNU General Public License as published by the
 Free Software Foundation; either version 2.
 
 You should also have received a copy of the GNU General Public License
-along with this program in the file named "Copying". If not, write to the 
+along with this program in the file named "GPL". If not, write to the 
 
         Free Software Foundation, Inc.
         59 Temple Place, Suite 330

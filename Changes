@@ -1,5 +1,12 @@
 Revision history for Perl extension Bad::Words
 
+0.05  Thu May 23 15:10:17 PDT 2013
+	add code to check "adwords", and "remove" lists for 
+	undefined enteries and zero length strings.
+	updated documentation
+	added sub 'noregex' to remove words from
+	the list matching a 'regex' string
+
 0.04  Wed May 22 17:49:18 PDT 2013
 	correct a bunch of typo's, thanks to 
 	Jeremy Mates <jeremy.mates@gmail.com>
