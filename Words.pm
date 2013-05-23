@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = do { my @r = (q$Revision: 0.03 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 0.04 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 =head1 NAME
 
@@ -28,11 +28,11 @@ abusive profanity vulgarity swearing sexual slurs
 =head1 DESCRIPTION
 
 This module returns an array REF to an alphabetically sorted list of LOWER CASE of B<bad words>.
-You can add more words during initilization with B<once> or B<new> B<newthrd>.
+You can add more words during initiliazation with B<once> or B<new> B<newthrd>.
 
 The list contains American dirty words, swear words, etc...
 
-=head1 WORD SOURCE'S
+=head1 WORD SOURCES
 
 The words are taken from the public domain, internet sites and the
 imagination of contributors.
@@ -1160,6 +1160,8 @@ This method returns the number of unique words in the bad word list.
   input:	none
   return:	number of words
 
+=back
+
 =head1 AUTHOR
 
 Michael Robinton E<lt>michael@bizsystems.comE<gt>
@@ -1185,4 +1187,4 @@ or visit their web page on the internet at:
 
         http://www.gnu.org/copyleft/gpl.html.
 
-=back
+=cut
