@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = do { my @r = (q$Revision: 0.07 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 0.08 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 =head1 NAME
 
@@ -1207,7 +1207,7 @@ Michael Robinton E<lt>michael@bizsystems.comE<gt>
 
 =head1 COPYRIGHT  
 
-    Copyright 2013, Michael Robinton <michael@bizsystems.com>
+    Copyright 2013-2014, Michael Robinton <michael@bizsystems.com>
 
 All rights reserved.
 
